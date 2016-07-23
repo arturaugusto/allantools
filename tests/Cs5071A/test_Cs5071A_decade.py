@@ -50,19 +50,104 @@ rate = 1/float(1.0) # stable32 runs were done with this data-interval
 class TestCS():
     def test_adev(self):
         self.generic_test( result= 'adev_decade.txt' , fct= allan.adev )
+    
+    def test_adev_ci(self):
+        s32rows = testutils.read_stable32(resultfile='adev_decade.txt', datarate=1.0)
+        for row in s32rows:
+            data = testutils.read_datafile(data_file)
+            (taus, devs, errs, ns) = allan.adev(data, rate=rate,
+                                                  taus=[ row['tau'] ])
+            edf = allan.edf_greenhall(alpha=row['alpha'],d=2,m=row['m'],N=len(data),overlapping=False, modified = False, verbose=True)
+            (lo,hi) =allan.confidence_intervals(devs[0],ci=0.68268949213708585, edf=edf)
+            print("n check: ", testutils.check_equal( ns[0], row['n'] ) )
+            print("dev check: ", testutils.check_approx_equal( devs[0], row['dev'] ) )
+            print("min dev check: ",  lo, row['dev_min'], testutils.check_approx_equal( lo, row['dev_min'], tolerance=1e-3 ) )
+            print("max dev check: ", hi, row['dev_max'], testutils.check_approx_equal( hi, row['dev_max'], tolerance=1e-3 ) )
+        
     def test_oadev(self):
         self.generic_test( result='oadev_decade.txt' , fct= allan.oadev )
+    
+    def test_oadev_ci(self):
+        s32rows = testutils.read_stable32(resultfile='oadev_decade.txt', datarate=1.0)
+        for row in s32rows:
+            data = testutils.read_datafile(data_file)
+            (taus, devs, errs, ns) = allan.oadev(data, rate=rate,
+                                                  taus=[ row['tau'] ])
+            edf = allan.edf_greenhall(alpha=row['alpha'],d=2,m=row['m'],N=len(data),overlapping=True, modified = False, verbose=True)
+            (lo,hi) =allan.confidence_intervals(devs[0],ci=0.68268949213708585, edf=edf)
+            print("n check: ", testutils.check_equal( ns[0], row['n'] ) )
+            print("dev check: ", testutils.check_approx_equal( devs[0], row['dev'] ) )
+            print("min dev check: ",  lo, row['dev_min'], testutils.check_approx_equal( lo, row['dev_min'], tolerance=1e-3 ) )
+            print("max dev check: ", hi, row['dev_max'], testutils.check_approx_equal( hi, row['dev_max'], tolerance=1e-3 ) )
+    
     def test_mdev(self):
         self.generic_test( result='mdev_decade.txt' , fct= allan.mdev )
+    
+    def test_mdev_ci(self):
+        s32rows = testutils.read_stable32(resultfile='mdev_decade.txt', datarate=1.0)
+        for row in s32rows:
+            data = testutils.read_datafile(data_file)
+            (taus, devs, errs, ns) = allan.mdev(data, rate=rate,
+                                                  taus=[ row['tau'] ])
+            edf = allan.edf_greenhall(alpha=row['alpha'],d=2,m=row['m'],N=len(data),overlapping=True, modified = True, verbose=True)
+            (lo,hi) =allan.confidence_intervals(devs[0],ci=0.68268949213708585, edf=edf)
+            print("n check: ", testutils.check_equal( ns[0], row['n'] ) )
+            print("dev check: ", testutils.check_approx_equal( devs[0], row['dev'] ) )
+            print("min dev check: ",  lo, row['dev_min'], testutils.check_approx_equal( lo, row['dev_min'], tolerance=1e-3 ) )
+            print("max dev check: ", hi, row['dev_max'], testutils.check_approx_equal( hi, row['dev_max'], tolerance=1e-3 ) )
+        
     def test_tdev(self):
         self.generic_test( result='tdev_decade.txt' , fct= allan.tdev )
+    
+    
     def test_hdev(self):
         self.generic_test( result='hdev_decade.txt' , fct= allan.hdev )
+    
+    def test_hdev_ci(self):
+        s32rows = testutils.read_stable32(resultfile='hdev_decade.txt', datarate=1.0)
+        for row in s32rows:
+            data = testutils.read_datafile(data_file)
+            (taus, devs, errs, ns) = allan.hdev(data, rate=rate,
+                                                  taus=[ row['tau'] ])
+            edf = allan.edf_greenhall(alpha=row['alpha'],d=3,m=row['m'],N=len(data),overlapping=False, modified = False, verbose=True)
+            (lo,hi) =allan.confidence_intervals(devs[0],ci=0.68268949213708585, edf=edf)
+            print("n check: ", testutils.check_equal( ns[0], row['n'] ) )
+            print("dev check: ", testutils.check_approx_equal( devs[0], row['dev'] ) )
+            print("min dev check: ",  lo, row['dev_min'], testutils.check_approx_equal( lo, row['dev_min'], tolerance=1e-3 ) )
+            print("max dev check: ", hi, row['dev_max'], testutils.check_approx_equal( hi, row['dev_max'], tolerance=1e-3 ) )
+            
     def test_ohdev(self):
         self.generic_test( result='ohdev_decade.txt' , fct= allan.ohdev )
+    
+    def test_ohdev_ci(self):
+        s32rows = testutils.read_stable32(resultfile='ohdev_decade.txt', datarate=1.0)
+        for row in s32rows:
+            data = testutils.read_datafile(data_file)
+            (taus, devs, errs, ns) = allan.ohdev(data, rate=rate,
+                                                  taus=[ row['tau'] ])
+            edf = allan.edf_greenhall(alpha=row['alpha'],d=3,m=row['m'],N=len(data),overlapping=True, modified = False, verbose=True)
+            (lo,hi) =allan.confidence_intervals(devs[0],ci=0.68268949213708585, edf=edf)
+            print("n check: ", testutils.check_equal( ns[0], row['n'] ) )
+            print("dev check: ", testutils.check_approx_equal( devs[0], row['dev'] ) )
+            print("min dev check: ",  lo, row['dev_min'], testutils.check_approx_equal( lo, row['dev_min'], tolerance=1e-3 ) )
+            print("max dev check: ", hi, row['dev_max'], testutils.check_approx_equal( hi, row['dev_max'], tolerance=1e-3 ) )
+    
     def test_totdev(self):
         self.generic_test( result='totdev_decade.txt' , fct= allan.totdev )
 
+    def test_totdev_ci(self):
+        s32rows = testutils.read_stable32(resultfile='totdev_decade.txt', datarate=1.0)
+        for row in s32rows:
+            data = testutils.read_datafile(data_file)
+            (taus, devs, errs, ns) = allan.totdev(data, rate=rate,
+                                                  taus=[ row['tau'] ])
+            edf = allan.edf_totdev(N=len(data),m=row['m'], alpha=row['alpha'])
+            #,d=3,m=row['m'],N=len(data),overlapping=True, modified = False, verbose=True)
+            (lo,hi) = allan.confidence_intervals(devs[0],ci=0.68268949213708585, edf=edf)
+            print("n check: ", testutils.check_equal( ns[0], row['n'] ) )
+            print("dev check: ", testutils.check_approx_equal( devs[0], row['dev'] ) )
+            print("min dev check: ",  lo, row['dev_min'], testutils.check_approx_equal( lo, row['dev_min'], tolerance=1e-3 ) )
+            print("max dev check: ", hi, row['dev_max'], testutils.check_approx_equal( hi, row['dev_max'], tolerance=1e-3 ) )
 
     #def test_mtie(self):
     #    self.generic_test( result='mtie_fast.txt' , fct= allan.mtie )
@@ -74,6 +159,8 @@ class TestCS():
         testutils.test_row_by_row( fct, datafile, 1.0, result , verbose=verbose, tolerance=tolerance)
 
 if __name__ == "__main__":
-    pytest.main()
-
+    #pytest.main()
+    t=TestCS()
+    #t.test_adev()
+    t.test_totdev_ci()
 

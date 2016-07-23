@@ -19,16 +19,22 @@ __all__ = [
     'frequency2phase',
     'phase2frequency',
     'phase2radians',
+    'frequency2fractional',
     'three_cornered_hat_phase',
     'noise',
     'gradev',
-    'uncertainty_estimate'
+    'edf_simple',
+    'edf_greenhall',
+    'edf_totdev',
+    'edf_mtotdev',
+    'confidence_intervals',
     ]
 
 from .allantools import __version__
 from .allantools import frequency2phase
 from .allantools import phase2frequency
 from .allantools import phase2radians
+from .allantools import frequency2fractional
 from .allantools import three_cornered_hat_phase
 
 from .allantools import adev
@@ -57,6 +63,11 @@ from .allantools import tierms
 
 from .allantools import gradev
 
-from .allantools import uncertainty_estimate
+from .allantools import edf_simple
+from .allantools import edf_greenhall
+from .allantools import edf_totdev 
+from .allantools import edf_mtotdev
+from .allantools import confidence_intervals
+
 
 from . import noise
